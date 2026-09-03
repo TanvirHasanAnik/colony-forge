@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -73,3 +74,7 @@ export default defineConfig([
 ])
 
 ```
+=======
+# colony-forge
+A colony building strategic game 
+>>>>>>> c7ac5b931fcaf7569acf6b12968e5f4ff48fb572
