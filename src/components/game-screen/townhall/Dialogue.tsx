@@ -1,5 +1,5 @@
-import { PrimaryButton } from "../../common/buttons/PrimaryButton"
-
+import { PrimaryButton } from "../../common/buttons/PrimaryButton";
+import { BUILDING_NAMES } from "../../../utilities/building-types";
 
 export default function TownhallDialogue({isOpen, onClose, setBuildings}){
     if(!isOpen) return null
@@ -36,10 +36,10 @@ export default function TownhallDialogue({isOpen, onClose, setBuildings}){
                     </div>
                     <div className="flex flex-col items-start">
                         <h3 className="pb-2">Construct more</h3>
-                        <PrimaryButton className="mb-2" onClick={() => addBuilding("HOUSE",1,1)}>+ house</PrimaryButton>
-                        <PrimaryButton className="mb-2">+ Sawmill</PrimaryButton>
-                        <PrimaryButton className="mb-2">+ Hunter's hut</PrimaryButton>
-                        <PrimaryButton>+ Builderhut</PrimaryButton>
+                        <PrimaryButton className="mb-2" onClick={() => addBuilding(BUILDING_NAMES.HOUSE,0,0)}>+ house</PrimaryButton>
+                        <PrimaryButton className="mb-2" onClick={() => addBuilding(BUILDING_NAMES.SAWMILL,0,0)}>+ Sawmill</PrimaryButton>
+                        <PrimaryButton className="mb-2" onClick={() => addBuilding(BUILDING_NAMES.HUNTERHUT,0,0)}>+ Hunter's hut</PrimaryButton>
+                        <PrimaryButton onClick={() => addBuilding(BUILDING_NAMES.BUILDERHUT,0,0)}>+ Builderhut</PrimaryButton>
                     </div>
                 </div>
                 <PrimaryButton>Upgrade Townhall</PrimaryButton>

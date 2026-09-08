@@ -1,10 +1,10 @@
 import { useState } from "react";
 import TownhallDialogue from "./townhall/Dialogue";
-import { BUILDING_TYPES } from "../../utilities/building-types";
+import {  BUILDING_CONFIGS, BUILDING_NAMES } from "../../utilities/building-types";
 export default function GameScreen(){
   interface BuildingInstance {
     id: string;
-    type: keyof typeof BUILDING_TYPES;
+    type: keyof typeof BUILDING_CONFIGS;
     gridX: number; 
     gridY: number; 
     level: number;
@@ -16,11 +16,11 @@ export default function GameScreen(){
   };
 
   const [buildings, setBuildings] = useState<BuildingInstance[]>([
-    { id: "b1", type: "TOWNHALL", gridX: 2, gridY: 2, level: 1, lastCollected: Date.now() },
-    { id: "b2", type: "HOUSE", gridX: 3, gridY: 3, level: 1, lastCollected: Date.now() },
-    { id: "b3", type: "HUNTERHUT", gridX: 1, gridY: 1, level: 1, lastCollected: Date.now() },
-    { id: "b4", type: "SAWMILL", gridX: 1, gridY: 3, level: 1, lastCollected: Date.now() },
-    { id: "b5", type: "BUILDERHUT", gridX: 3, gridY: 2, level: 1, lastCollected: Date.now() },
+    { id: "b1", type: BUILDING_NAMES.TOWNHALL, gridX: 2, gridY: 2, level: 1, lastCollected: Date.now() },
+    { id: "b2", type: BUILDING_NAMES.HOUSE, gridX: 3, gridY: 3, level: 1, lastCollected: Date.now() },
+    { id: "b3", type: BUILDING_NAMES.HUNTERHUT, gridX: 1, gridY: 1, level: 1, lastCollected: Date.now() },
+    { id: "b4", type: BUILDING_NAMES.SAWMILL, gridX: 1, gridY: 3, level: 1, lastCollected: Date.now() },
+    { id: "b5", type: BUILDING_NAMES.BUILDERHUT, gridX: 3, gridY: 2, level: 1, lastCollected: Date.now() },
   ]);
 
   const handleCloseDialogue = () => {
@@ -28,16 +28,16 @@ export default function GameScreen(){
   };
   return (
       <>
-        <TownhallDialogue isOpen={activeDialogue === "townhall"} onClose={handleCloseDialogue} setBuildings={setBuildings}/>
+        <TownhallDialogue isOpen={activeDialogue === BUILDING_NAMES.TOWNHALL} onClose={handleCloseDialogue} setBuildings={setBuildings}/>
         <div className="grid grid-cols-5 grid-rows-5 gap-2 border border-gray-400 h-full w-full items-center justify-center">
         {buildings.map((b) => {
-          const config = BUILDING_TYPES[b.type];
-          const dialogueName = "dialogName" in config ? config.dialogName : undefined;
+          const config = BUILDING_CONFIGS[b.type];
+          // const dialogueName = "dialogName" in config ? config.dialogName : undefined;
 
           return (
             <button
               key={b.id}
-              onClick={() => handleOpenDialogue(dialogueName)}
+              onClick={() => handleOpenDialogue(b.type)}
               style={{
                 gridColumnStart: b.gridX + 1,
                 gridRowStart: b.gridY + 1,
