@@ -1,26 +1,56 @@
 import { useState } from "react";
 import TownhallDialogue from "./townhall/Dialogue";
+import { BUILDING_TYPES } from "../../utilities/building-types";
 export default function GameScreen(){
+  interface BuildingInstance {
+    id: string;
+    type: keyof typeof BUILDING_TYPES;
+    gridX: number; 
+    gridY: number; 
+    level: number;
+    lastCollected: number;
+  }
   const [activeDialogue, setActiveDialogue] = useState<any>(null);
   const handleOpenDialogue = (dialogueName: string) => {
     setActiveDialogue(dialogueName);
   };
+
+  const [buildings, setBuildings] = useState<BuildingInstance[]>([
+    { id: "b1", type: "TOWNHALL", gridX: 2, gridY: 2, level: 1, lastCollected: Date.now() },
+    { id: "b2", type: "HOUSE", gridX: 3, gridY: 3, level: 1, lastCollected: Date.now() },
+    { id: "b3", type: "HUNTERHUT", gridX: 1, gridY: 1, level: 1, lastCollected: Date.now() },
+    { id: "b4", type: "SAWMILL", gridX: 1, gridY: 3, level: 1, lastCollected: Date.now() },
+    { id: "b5", type: "BUILDERHUT", gridX: 3, gridY: 2, level: 1, lastCollected: Date.now() },
+  ]);
 
   const handleCloseDialogue = () => {
     setActiveDialogue(null);
   };
   return (
       <>
-        <TownhallDialogue isOpen={activeDialogue === "townhall"} onClose={handleCloseDialogue}/>
-        <div className='grid grid-cols-5 grid-rows-5 gap-2 border border-gray-400 h-full w-full items-center justify-center'>
-          <button 
-          onClick={() => handleOpenDialogue('townhall')}
-          className='col-start-3 row-start-3 text-white cursor-pointer bg-blue-400 hover:bg-blue-600 w-full h-full rounded'>Townhall</button>
-          <button className='col-start-4 row-start-4 text-white cursor-pointer bg-yellow-400 hover:bg-yellow-600 w-full h-full rounded'>House</button>
-          <button className='col-start-2 row-start-2 text-white cursor-pointer bg-red-400 hover:bg-red-600 w-full h-full rounded'>Hunter's hut</button>
-          <button className='col-start-2 row-start-4 text-white cursor-pointer bg-amber-600 hover:bg-amber-800 w-full h-full rounded'>Sawmill</button>
-          <button className='col-start-4 row-start-3 text-white cursor-pointer bg-green-400 hover:bg-green-600 w-full h-full rounded'>Builderhut</button>
-        </div>
+        <TownhallDialogue isOpen={activeDialogue === "townhall"} onClose={handleCloseDialogue} setBuildings={setBuildings}/>
+        <div className="grid grid-cols-5 grid-rows-5 gap-2 border border-gray-400 h-full w-full items-center justify-center">
+        {buildings.map((b) => {
+          const config = BUILDING_TYPES[b.type];
+          const dialogueName = "dialogName" in config ? config.dialogName : undefined;
+
+          return (
+            <button
+              key={b.id}
+              onClick={() => handleOpenDialogue(dialogueName)}
+              style={{
+                gridColumnStart: b.gridX + 1,
+                gridRowStart: b.gridY + 1,
+              }}
+              className={`text-white cursor-pointer w-full h-full rounded transition-colors ${
+                config.color || "bg-gray-500 hover:bg-gray-700"
+              }`}
+            >
+              {config.name}
+            </button>
+          );
+        })}
+      </div>
       </>
     )
 }
