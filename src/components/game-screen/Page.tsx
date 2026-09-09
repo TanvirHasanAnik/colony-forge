@@ -75,9 +75,13 @@ export default function GameScreen() {
         onMouseMove={handleMouseMove}
         onMouseLeave={() => setHoveredCoords(null)}
         className={`grid grid-cols-5 grid-rows-5 gap-2 border border-gray-400 h-full w-full items-center justify-center p-2 bg-slate-100 relative ${
-          isBuildingMode ? "cursor-crosshair" : ""
+          isBuildingMode
+            ? isOccupied
+              ? "cursor-not-allowed"
+              : "cursor-crosshair"
+            : ""
         }`}
-      >
+        >
         {buildings.map((b) => {
           const config = BUILDING_CONFIGS[b.type];
 
@@ -86,16 +90,23 @@ export default function GameScreen() {
               key={b.id}
               onClick={(e) => {
                 // Prevent grid placement handler when clicking an existing building
-                if (isBuildingMode) e.stopPropagation();
-                setActiveDialogue(b.type);
+                if (isBuildingMode) {
+                  e.stopPropagation();
+                }else{
+                  setActiveDialogue(b.type);
+                }
               }}
               style={{
                 gridColumnStart: b.gridX + 1,
                 gridRowStart: b.gridY + 1,
               }}
-              className={`text-white cursor-pointer w-full h-full rounded transition-all duration-150 z-10 ${
+              className={`text-white w-full h-full rounded transition-all duration-150 z-10 ${
                 config.color || "bg-gray-500"
-              } hover:brightness-110 hover:ring-4 hover:ring-yellow-400`}
+              } ${
+                isBuildingMode
+                  ? "cursor-not-allowed" // Overrides pointer cursor when build mode is active
+                  : "cursor-pointer hover:brightness-110 hover:ring-4 hover:ring-yellow-400"
+              }`}
             >
               {config.name}
             </button>
