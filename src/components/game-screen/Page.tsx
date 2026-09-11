@@ -1,6 +1,10 @@
 import { MouseEvent, useState } from "react";
 import { BUILDING_CONFIGS, BUILDING_NAMES } from "../../utilities/building-types";
+import HunterHutDialogue from "./hunter-hut/Dialogue";
+import SawmillDialogue from "./sawmill/Dialogue";
 import TownhallDialogue from "./townhall/Dialogue";
+import BuilderHutDialogue from "./builder-hut/Dialogue";
+import HouseDialogue from "./house/Dialogue";
 
 export default function GameScreen() {
   interface BuildingInstance {
@@ -56,6 +60,18 @@ export default function GameScreen() {
         isBuildingMode={isBuildingMode}
         setIsBuildingMode={setIsBuildingMode}
         hoveredCoords={hoveredCoords}
+      />
+      <HunterHutDialogue isOpen={activeDialogue === BUILDING_NAMES.HUNTERHUT}
+        onClose={() => setActiveDialogue(null)}
+      />
+      <SawmillDialogue isOpen={activeDialogue === BUILDING_NAMES.SAWMILL}
+        onClose={() => setActiveDialogue(null)}
+      />
+      <BuilderHutDialogue isOpen={activeDialogue === BUILDING_NAMES.BUILDERHUT}
+        onClose={() => setActiveDialogue(null)}
+      />
+      <HouseDialogue isOpen={activeDialogue === BUILDING_NAMES.HOUSE}
+        onClose={() => setActiveDialogue(null)}
       />
 
       <div className="text-center font-bold p-2 bg-slate-800 text-white rounded mb-2 flex justify-between px-4 items-center">
