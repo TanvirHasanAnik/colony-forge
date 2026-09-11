@@ -34,6 +34,16 @@ export default function TownhallDialogue({
     onClose();
   };
 
+  const getBuildingCounts = () => {
+    return buildings.reduce((acc, current) => {
+      const type = current.type;
+      if (type != null) {
+        acc[type] = (acc[type] || 0) + 1;
+      }
+      return acc;
+    }, {});
+  };
+
   useEffect(() => {
     if (!isBuildingMode || !selectedBuildingType || !hoveredCoords) return;
 
@@ -73,10 +83,11 @@ export default function TownhallDialogue({
           <div>
             <h3 className="pb-2">List of Buildings</h3>
             <ul className="text-left">
-              <li>House 1x</li>
-              <li>Sawmill 1x</li>
-              <li>Hunter's hut 1x</li>
-              <li>Builderhut 1x</li>
+              {Object.entries(getBuildingCounts()).map(([type, count]) => (
+                <li key={type}>
+                  {type} {count}x
+                </li>
+              ))}
             </ul>
           </div>
           <div className="flex flex-col items-start">
