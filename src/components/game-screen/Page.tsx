@@ -31,6 +31,13 @@ export default function GameScreen() {
     { id: "b5", type: BUILDING_NAMES.BUILDERHUT, gridX: 3, gridY: 2, level: 1, lastCollected: Date.now() },
   ]);
 
+  const handleContextMenu = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    if(isBuildingMode){
+      setIsBuildingMode(false)
+    }
+  }
+
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     
@@ -90,6 +97,7 @@ export default function GameScreen() {
       <div 
         onMouseMove={handleMouseMove}
         onMouseLeave={() => setHoveredCoords(null)}
+        onContextMenu={handleContextMenu}
         className={`grid grid-cols-5 grid-rows-5 gap-2 border border-gray-400 h-full w-full items-center justify-center p-2 bg-slate-100 relative ${
           isBuildingMode
             ? isOccupied
@@ -105,7 +113,6 @@ export default function GameScreen() {
             <button
               key={b.id}
               onClick={(e) => {
-                // Prevent grid placement handler when clicking an existing building
                 if (isBuildingMode) {
                   e.stopPropagation();
                 }else{
@@ -120,7 +127,7 @@ export default function GameScreen() {
                 config.color || "bg-gray-500"
               } ${
                 isBuildingMode
-                  ? "cursor-not-allowed" // Overrides pointer cursor when build mode is active
+                  ? "cursor-not-allowed" 
                   : "cursor-pointer hover:brightness-110 hover:ring-4 hover:ring-yellow-400"
               }`}
             >
