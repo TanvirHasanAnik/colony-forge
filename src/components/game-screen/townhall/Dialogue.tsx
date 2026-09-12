@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { BUILDING_NAMES } from "../../../utilities/building-types";
 import { PrimaryButton } from "../../common/buttons/PrimaryButton";
+import { AddHunterhut } from "./AddBuildingPrompt";
 
 export default function TownhallDialogue({
   isOpen,
@@ -12,6 +13,7 @@ export default function TownhallDialogue({
   buildings,
 }) {
   const [selectedBuildingType, setSelectedBuildingType] = useState<string | null>(null);
+  const [promptDialogue, setPromptDialogue] = useState<string | null>(null);
 
   const addBuilding = (buildingType: string, x: number, y: number) => {
     const newBuilding = {
@@ -31,6 +33,7 @@ export default function TownhallDialogue({
   const handleSelectBuilding = (buildingType: string) => {
     setSelectedBuildingType(buildingType);
     setIsBuildingMode(true);
+    setPromptDialogue(null)
     onClose();
   };
 
@@ -66,58 +69,67 @@ export default function TownhallDialogue({
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-      onClick={onClose}
+      onClick={() => {onClose();setPromptDialogue(null)}}
     >
       <div
         className="bg-blue-200 max-w-md w-full p-3"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between">
-          <h2>
-            Townhall <span>Lv 1</span>
-          </h2>
-          <PrimaryButton onClick={onClose}>X</PrimaryButton>
-        </div>
-        <br />
-        <div className="flex justify-between pb-5">
-          <div>
-            <h3 className="pb-2">List of Buildings</h3>
-            <ul className="text-left">
-              {Object.entries(getBuildingCounts()).map(([type, count]) => (
-                <li key={type}>
-                  {type} {count}x
-                </li>
-              ))}
-            </ul>
+        
+        {(promptDialogue === null) && 
+        <div>
+          <div className="flex justify-between">
+            <h2>
+              Townhall <span>Lv 1</span>
+            </h2>
+            <PrimaryButton onClick={onClose}>X</PrimaryButton>
           </div>
-          <div className="flex flex-col items-start">
-            <h3 className="pb-2">Construct more</h3>
-            <PrimaryButton
-              className="mb-2"
-              onClick={() => handleSelectBuilding(BUILDING_NAMES.HOUSE)}
-            >
-              + house
-            </PrimaryButton>
-            <PrimaryButton
-              className="mb-2"
-              onClick={() => handleSelectBuilding(BUILDING_NAMES.SAWMILL)}
-            >
-              + Sawmill
-            </PrimaryButton>
-            <PrimaryButton
-              className="mb-2"
-              onClick={() => handleSelectBuilding(BUILDING_NAMES.HUNTERHUT)}
-            >
-              + Hunter's hut
-            </PrimaryButton>
-            <PrimaryButton
-              onClick={() => handleSelectBuilding(BUILDING_NAMES.BUILDERHUT)}
-            >
-              + Builderhut
-            </PrimaryButton>
+          <br />
+          <div className="flex justify-between pb-5">
+            <div>
+              <h3 className="pb-2">List of Buildings</h3>
+              <ul className="text-left">
+                {Object.entries(getBuildingCounts()).map(([type, count]) => (
+                  <li key={type}>
+                    {type} {count}x
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex flex-col items-start">
+              <h3 className="pb-2">Construct more</h3>
+              <PrimaryButton
+                className="mb-2"
+                onClick={() => handleSelectBuilding(BUILDING_NAMES.HOUSE)}
+              >
+                + house
+              </PrimaryButton>
+              <PrimaryButton
+                className="mb-2"
+                onClick={() => handleSelectBuilding(BUILDING_NAMES.SAWMILL)}
+              >
+                + Sawmill
+              </PrimaryButton>
+              <PrimaryButton
+                className="mb-2"
+                onClick={() => setPromptDialogue("AddHunterhut")}
+              >
+                + Hunter's hut
+              </PrimaryButton>
+              <PrimaryButton
+                onClick={() => handleSelectBuilding(BUILDING_NAMES.BUILDERHUT)}
+              >
+                + Builderhut
+              </PrimaryButton>
+            </div>
           </div>
+          <PrimaryButton>Upgrade Townhall</PrimaryButton>
         </div>
-        <PrimaryButton>Upgrade Townhall</PrimaryButton>
+        }
+        
+        {(promptDialogue === "AddHunterhut") && 
+          <AddHunterhut setPromptDialogue={setPromptDialogue} handleSelectBuilding={handleSelectBuilding}/>
+        }
       </div>
     </div>
   );
