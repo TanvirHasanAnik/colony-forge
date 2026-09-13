@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { BUILDING_NAMES } from "../../../utilities/building-types";
 import { PrimaryButton } from "../../common/buttons/PrimaryButton";
-import { AddHunterhut } from "./AddBuildingPrompt";
+import { AddHunterhut,AddBuilderhut,AddSawmill,AddHouse } from "./AddBuildingPrompt";
+import { ADD_BUILDING_PROMPT } from "./constantStrings";
 
 export default function TownhallDialogue({
   isOpen,
@@ -100,24 +101,24 @@ export default function TownhallDialogue({
               <h3 className="pb-2">Construct more</h3>
               <PrimaryButton
                 className="mb-2"
-                onClick={() => handleSelectBuilding(BUILDING_NAMES.HOUSE)}
+                onClick={() => setPromptDialogue(ADD_BUILDING_PROMPT[BUILDING_NAMES.HOUSE])}
               >
                 + house
               </PrimaryButton>
               <PrimaryButton
                 className="mb-2"
-                onClick={() => handleSelectBuilding(BUILDING_NAMES.SAWMILL)}
+                onClick={() => setPromptDialogue(ADD_BUILDING_PROMPT[BUILDING_NAMES.SAWMILL])}
               >
                 + Sawmill
               </PrimaryButton>
               <PrimaryButton
                 className="mb-2"
-                onClick={() => setPromptDialogue("AddHunterhut")}
+                onClick={() => setPromptDialogue(ADD_BUILDING_PROMPT[BUILDING_NAMES.HUNTERHUT])}
               >
                 + Hunter's hut
               </PrimaryButton>
               <PrimaryButton
-                onClick={() => handleSelectBuilding(BUILDING_NAMES.BUILDERHUT)}
+                onClick={() => setPromptDialogue(ADD_BUILDING_PROMPT[BUILDING_NAMES.BUILDERHUT])}
               >
                 + Builderhut
               </PrimaryButton>
@@ -127,8 +128,20 @@ export default function TownhallDialogue({
         </div>
         }
         
-        {(promptDialogue === "AddHunterhut") && 
+        {(promptDialogue === ADD_BUILDING_PROMPT[BUILDING_NAMES.HUNTERHUT]) && 
           <AddHunterhut setPromptDialogue={setPromptDialogue} handleSelectBuilding={handleSelectBuilding}/>
+        }
+        
+        {(promptDialogue === ADD_BUILDING_PROMPT[BUILDING_NAMES.BUILDERHUT]) && 
+          <AddBuilderhut setPromptDialogue={setPromptDialogue} handleSelectBuilding={handleSelectBuilding}/>
+        }
+        
+        {(promptDialogue === ADD_BUILDING_PROMPT[BUILDING_NAMES.HOUSE]) && 
+          <AddHouse setPromptDialogue={setPromptDialogue} handleSelectBuilding={handleSelectBuilding}/>
+        }
+        
+        {(promptDialogue === ADD_BUILDING_PROMPT[BUILDING_NAMES.SAWMILL]) && 
+          <AddSawmill setPromptDialogue={setPromptDialogue} handleSelectBuilding={handleSelectBuilding}/>
         }
       </div>
     </div>
