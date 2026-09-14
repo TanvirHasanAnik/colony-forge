@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+import { RESOURCE_NAMES } from '../constantStrings';
 const initialState = {
-  coin: 100,
-  wood: 50,
-  meat: 20,
+  [RESOURCE_NAMES.COIN]: 100,
+  [RESOURCE_NAMES.WOOD]: 50,
+  [RESOURCE_NAMES.MEAT]: 20,
 };
 
 export const resourceSlice = createSlice({

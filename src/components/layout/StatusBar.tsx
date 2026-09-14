@@ -1,15 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
+import { RESOURCE_NAMES } from "../../constantStrings";
 import { addResources, deductResources } from "../../resources/resourceSlice";
 
+
 export default function StatusBar() {
-  const { coin, wood, meat } = useSelector((state) => state.resources);
+  const resources = useSelector((state) => state.resources);
   const dispatch = useDispatch()
 
-  const navItems = [
-    { id: "coin", label: "Coin", value: coin },
-    { id: "wood", label: "Wood", value: wood },
-    { id: "meat", label: "Meat", value: meat },
-  ];
+  const navItems = Object.values(RESOURCE_NAMES).map((resourceKey) => ({
+    id: resourceKey,
+    label: resourceKey,
+    value: resources[resourceKey],
+  }));
 
   return (
     <div className="flex items-center gap-6 bg-slate-900 px-6 py-3 text-white shadow-md">
@@ -22,10 +24,10 @@ export default function StatusBar() {
         </div>
       ))}
       <button
-        onClick={() => dispatch(addResources({coin:10}))}
+        onClick={() => dispatch(addResources({[RESOURCE_NAMES.COIN]:10}))}
       >Add 10 coin</button>
       <button
-        onClick={() => dispatch(deductResources({coin:10}))}
+        onClick={() => dispatch(deductResources({[RESOURCE_NAMES.COIN]:10}))}
       >Reduce 10 coin</button>
     </div>
   );
