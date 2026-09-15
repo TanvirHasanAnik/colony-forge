@@ -1,6 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { RESOURCE_NAMES } from '../constantStrings';
-const initialState = {
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { RESOURCE_NAMES, type Resource } from './type';
+
+// 1. Explicitly type the initial state
+const initialState: Resource = {
   [RESOURCE_NAMES.COIN]: 100,
   [RESOURCE_NAMES.WOOD]: 50,
   [RESOURCE_NAMES.MEAT]: 20,
@@ -10,23 +12,25 @@ export const resourceSlice = createSlice({
   name: 'resources',
   initialState,
   reducers: {
-    addResources: (state, action) => {
-      Object.keys(action.payload).forEach((resource) => {
-        if (state[resource] !== undefined) {
-          state[resource] += action.payload[resource];
+    addResources: (state, action: PayloadAction<Partial<Resource>>) => {
+      (Object.keys(action.payload) as Array<keyof Resource>).forEach((resource) => {
+        const amount = action.payload[resource];
+        if (amount !== undefined && state[resource] !== undefined) {
+          state[resource] += amount;
         }
       });
     },
 
-    deductResources: (state, action) => {
-      Object.keys(action.payload).forEach((resource) => {
-        if (state[resource] !== undefined) {
-          state[resource] = Math.max(0, state[resource] - action.payload[resource]);
+    deductResources: (state, action: PayloadAction<Partial<Resource>>) => {
+      (Object.keys(action.payload) as Array<keyof Resource>).forEach((resource) => {
+        const amount = action.payload[resource];
+        if (amount !== undefined && state[resource] !== undefined) {
+          state[resource] = Math.max(0, state[resource] - amount);
         }
       });
     },
 
-    setResources: (state, action) => {
+    setResources: (state, action: PayloadAction<Partial<Resource>>) => {
       return { ...state, ...action.payload };
     },
   },

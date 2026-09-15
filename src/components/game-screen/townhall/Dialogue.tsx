@@ -1,8 +1,34 @@
 import { useEffect, useState } from "react";
 import { BUILDING_NAMES } from "../../../utilities/building-types";
 import { PrimaryButton } from "../../common/buttons/PrimaryButton";
-import { AddHunterhut,AddBuilderhut,AddSawmill,AddHouse } from "./AddBuildingPrompt";
+import { AddHunterhut, AddBuilderhut, AddSawmill, AddHouse } from "./AddBuildingPrompt";
 import { ADD_BUILDING_PROMPT } from "./constantStrings";
+
+// 1. Define Building interface
+export interface Building {
+  id: string;
+  type: string;
+  gridX: number;
+  gridY: number;
+  level: number;
+  lastCollected: number;
+}
+
+interface HoveredCoords {
+  x: number;
+  y: number;
+}
+
+// 2. Define Component Props Interface
+interface TownhallDialogueProps {
+  isOpen: boolean;
+  onClose: () => void;
+  setBuildings: React.Dispatch<React.SetStateAction<Building[]>>;
+  isBuildingMode: boolean;
+  setIsBuildingMode: (value: boolean) => void;
+  hoveredCoords: HoveredCoords | null;
+  buildings: Building[];
+}
 
 export default function TownhallDialogue({
   isOpen,
@@ -12,12 +38,12 @@ export default function TownhallDialogue({
   setIsBuildingMode,
   hoveredCoords,
   buildings,
-}) {
+}: TownhallDialogueProps) {
   const [selectedBuildingType, setSelectedBuildingType] = useState<string | null>(null);
   const [promptDialogue, setPromptDialogue] = useState<string | null>(null);
 
   const addBuilding = (buildingType: string, x: number, y: number) => {
-    const newBuilding = {
+    const newBuilding: Building = {
       id: crypto.randomUUID(),
       type: buildingType,
       gridX: x,
@@ -34,12 +60,13 @@ export default function TownhallDialogue({
   const handleSelectBuilding = (buildingType: string) => {
     setSelectedBuildingType(buildingType);
     setIsBuildingMode(true);
-    setPromptDialogue(null)
+    setPromptDialogue(null);
     onClose();
   };
 
-  const getBuildingCounts = () => {
-    return buildings.reduce((acc, current) => {
+  // 3. Typed accumulator in reduce
+  const getBuildingCounts = (): Record<string, number> => {
+    return buildings.reduce<Record<string, number>>((acc, current) => {
       const type = current.type;
       if (type != null) {
         acc[type] = (acc[type] || 0) + 1;
@@ -70,79 +97,81 @@ export default function TownhallDialogue({
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-      onClick={() => {onClose();setPromptDialogue(null)}}
+      onClick={() => {
+        onClose();
+        setPromptDialogue(null);
+      }}
     >
       <div
         className="bg-blue-200 max-w-md w-full p-3"
         onClick={(e) => e.stopPropagation()}
       >
-        
-        {(promptDialogue === null) && 
-        <div>
-          <div className="flex justify-between">
-            <h2>
-              Townhall <span>Lv 1</span>
-            </h2>
-            <PrimaryButton onClick={onClose}>X</PrimaryButton>
-          </div>
-          <br />
-          <div className="flex justify-between pb-5">
-            <div>
-              <h3 className="pb-2">List of Buildings</h3>
-              <ul className="text-left">
-                {Object.entries(getBuildingCounts()).map(([type, count]) => (
-                  <li key={type}>
-                    {type} {count}x
-                  </li>
-                ))}
-              </ul>
+        {promptDialogue === null && (
+          <div>
+            <div className="flex justify-between">
+              <h2>
+                Townhall <span>Lv 1</span>
+              </h2>
+              <PrimaryButton onClick={onClose}>X</PrimaryButton>
             </div>
-            <div className="flex flex-col items-start">
-              <h3 className="pb-2">Construct more</h3>
-              <PrimaryButton
-                className="mb-2"
-                onClick={() => setPromptDialogue(ADD_BUILDING_PROMPT[BUILDING_NAMES.HOUSE])}
-              >
-                + house
-              </PrimaryButton>
-              <PrimaryButton
-                className="mb-2"
-                onClick={() => setPromptDialogue(ADD_BUILDING_PROMPT[BUILDING_NAMES.SAWMILL])}
-              >
-                + Sawmill
-              </PrimaryButton>
-              <PrimaryButton
-                className="mb-2"
-                onClick={() => setPromptDialogue(ADD_BUILDING_PROMPT[BUILDING_NAMES.HUNTERHUT])}
-              >
-                + Hunter's hut
-              </PrimaryButton>
-              <PrimaryButton
-                onClick={() => setPromptDialogue(ADD_BUILDING_PROMPT[BUILDING_NAMES.BUILDERHUT])}
-              >
-                + Builderhut
-              </PrimaryButton>
+            <br />
+            <div className="flex justify-between pb-5">
+              <div>
+                <h3 className="pb-2">List of Buildings</h3>
+                <ul className="text-left">
+                  {Object.entries(getBuildingCounts()).map(([type, count]) => (
+                    <li key={type}>
+                      {type} {count}x
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="flex flex-col items-start">
+                <h3 className="pb-2">Construct more</h3>
+                <PrimaryButton
+                  className="mb-2"
+                  onClick={() => setPromptDialogue(ADD_BUILDING_PROMPT[BUILDING_NAMES.HOUSE])}
+                >
+                  + House
+                </PrimaryButton>
+                <PrimaryButton
+                  className="mb-2"
+                  onClick={() => setPromptDialogue(ADD_BUILDING_PROMPT[BUILDING_NAMES.SAWMILL])}
+                >
+                  + Sawmill
+                </PrimaryButton>
+                <PrimaryButton
+                  className="mb-2"
+                  onClick={() => setPromptDialogue(ADD_BUILDING_PROMPT[BUILDING_NAMES.HUNTERHUT])}
+                >
+                  + Hunter's hut
+                </PrimaryButton>
+                <PrimaryButton
+                  onClick={() => setPromptDialogue(ADD_BUILDING_PROMPT[BUILDING_NAMES.BUILDERHUT])}
+                >
+                  + Builderhut
+                </PrimaryButton>
+              </div>
             </div>
+            <PrimaryButton>Upgrade Townhall</PrimaryButton>
           </div>
-          <PrimaryButton>Upgrade Townhall</PrimaryButton>
-        </div>
-        }
-        
-        {(promptDialogue === ADD_BUILDING_PROMPT[BUILDING_NAMES.HUNTERHUT]) && 
-          <AddHunterhut setPromptDialogue={setPromptDialogue} handleSelectBuilding={handleSelectBuilding}/>
-        }
-        
-        {(promptDialogue === ADD_BUILDING_PROMPT[BUILDING_NAMES.BUILDERHUT]) && 
-          <AddBuilderhut setPromptDialogue={setPromptDialogue} handleSelectBuilding={handleSelectBuilding}/>
-        }
-        
-        {(promptDialogue === ADD_BUILDING_PROMPT[BUILDING_NAMES.HOUSE]) && 
-          <AddHouse setPromptDialogue={setPromptDialogue} handleSelectBuilding={handleSelectBuilding}/>
-        }
-        
-        {(promptDialogue === ADD_BUILDING_PROMPT[BUILDING_NAMES.SAWMILL]) && 
-          <AddSawmill setPromptDialogue={setPromptDialogue} handleSelectBuilding={handleSelectBuilding}/>
-        }
+        )}
+
+        {promptDialogue === ADD_BUILDING_PROMPT[BUILDING_NAMES.HUNTERHUT] && (
+          <AddHunterhut setPromptDialogue={setPromptDialogue} handleSelectBuilding={handleSelectBuilding} />
+        )}
+
+        {promptDialogue === ADD_BUILDING_PROMPT[BUILDING_NAMES.BUILDERHUT] && (
+          <AddBuilderhut setPromptDialogue={setPromptDialogue} handleSelectBuilding={handleSelectBuilding} />
+        )}
+
+        {promptDialogue === ADD_BUILDING_PROMPT[BUILDING_NAMES.HOUSE] && (
+          <AddHouse setPromptDialogue={setPromptDialogue} handleSelectBuilding={handleSelectBuilding} />
+        )}
+
+        {promptDialogue === ADD_BUILDING_PROMPT[BUILDING_NAMES.SAWMILL] && (
+          <AddSawmill setPromptDialogue={setPromptDialogue} handleSelectBuilding={handleSelectBuilding} />
+        )}
       </div>
     </div>
   );

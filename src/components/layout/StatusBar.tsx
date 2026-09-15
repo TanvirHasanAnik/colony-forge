@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RESOURCE_NAMES } from "../../constantStrings";
 import { addResources, deductResources } from "../../resources/resourceSlice";
+import { RESOURCE_NAMES } from "../../resources/type";
+import type { RootState } from "../../store"
 
 
 export default function StatusBar() {
-  const resources = useSelector((state) => state.resources);
+  const resources = useSelector((state: RootState) => state.resources);
   const dispatch = useDispatch()
 
   const navItems = Object.values(RESOURCE_NAMES).map((resourceKey) => ({
