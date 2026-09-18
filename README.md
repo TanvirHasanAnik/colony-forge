@@ -1,7 +1,8 @@
 Technologies used: 
     1. redux for resource management
 
-Problems faced:
+Difficulties faced:
+	1. Resource icrement with time based on buildings
 
 --------------------------------------------------------
 Resources:

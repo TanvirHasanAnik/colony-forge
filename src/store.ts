@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import  resourceReducer  from './resources/resourceSlice';
+import resourceReducer from './resources/resourceSlice';
+import buildingReducer from './buildings/buildingSlice'; // Adjust relative path as needed
 
 export const store = configureStore({
   reducer: {
     resources: resourceReducer,
+    buildings: buildingReducer,
   },
 });
 

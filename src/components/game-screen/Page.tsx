@@ -13,7 +13,6 @@ export default function GameScreen() {
     gridX: number;
     gridY: number;
     level: number;
-    lastCollected: number;
   }
 
   const [activeDialogue, setActiveDialogue] = useState<string | null>(null);
@@ -24,11 +23,11 @@ export default function GameScreen() {
   const GRID_ROWS = 5;
 
   const [buildings, setBuildings] = useState<BuildingInstance[]>([
-    { id: "b1", type: BUILDING_NAMES.TOWNHALL, gridX: 2, gridY: 2, level: 1, lastCollected: Date.now() },
-    { id: "b2", type: BUILDING_NAMES.HOUSE, gridX: 3, gridY: 3, level: 1, lastCollected: Date.now() },
-    { id: "b3", type: BUILDING_NAMES.HUNTERHUT, gridX: 1, gridY: 1, level: 1, lastCollected: Date.now() },
-    { id: "b4", type: BUILDING_NAMES.SAWMILL, gridX: 1, gridY: 3, level: 1, lastCollected: Date.now() },
-    { id: "b5", type: BUILDING_NAMES.BUILDERHUT, gridX: 3, gridY: 2, level: 1, lastCollected: Date.now() },
+    { id: "b1", type: BUILDING_NAMES.TOWNHALL, gridX: 2, gridY: 2, level: 1},
+    { id: "b2", type: BUILDING_NAMES.HOUSE, gridX: 3, gridY: 3, level: 1 },
+    { id: "b3", type: BUILDING_NAMES.HUNTERHUT, gridX: 1, gridY: 1, level: 1},
+    { id: "b4", type: BUILDING_NAMES.SAWMILL, gridX: 1, gridY: 3, level: 1},
+    { id: "b5", type: BUILDING_NAMES.BUILDERHUT, gridX: 3, gridY: 2, level: 1},
   ]);
 
   const handleContextMenu = (e: MouseEvent<HTMLDivElement>) => {
