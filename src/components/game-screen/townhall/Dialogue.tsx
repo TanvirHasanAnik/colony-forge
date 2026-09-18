@@ -1,70 +1,77 @@
-import { useEffect, useState } from "react";
-import { BUILDING_NAMES } from "../../../utilities/building-types";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addBuilding, type BuildingInstance } from "../../../buildings/buildingSlice";
+import { deductResources } from "../../../resources/resourceSlice";
+import type { RootState } from "../../../store";
+import { BUILDING_NAMES, type BuildingType } from "../../../utilities/building-types";
 import { PrimaryButton } from "../../common/buttons/PrimaryButton";
-import { AddHunterhut, AddBuilderhut, AddSawmill, AddHouse } from "./AddBuildingPrompt";
-import { ADD_BUILDING_PROMPT } from "./constantStrings";
+import {
+  AddHunterhut,
+  AddBuilderhut,
+  AddSawmill,
+  AddHouse,
+} from "./AddBuildingPrompt";
+import { ADD_BUILDING_PROMPT, BUILDINGS_CONFIG } from "./constantStrings";
 
-// 1. Define Building interface
-export interface Building {
-  id: string;
-  type: string;
-  gridX: number;
-  gridY: number;
-  level: number;
-  lastCollected: number;
-}
+export type Building = BuildingInstance;
 
 interface HoveredCoords {
   x: number;
   y: number;
 }
 
-// 2. Define Component Props Interface
 interface TownhallDialogueProps {
   isOpen: boolean;
   onClose: () => void;
-  setBuildings: React.Dispatch<React.SetStateAction<Building[]>>;
   isBuildingMode: boolean;
   setIsBuildingMode: (value: boolean) => void;
   hoveredCoords: HoveredCoords | null;
-  buildings: Building[];
+  setBuildings?: React.Dispatch<React.SetStateAction<BuildingInstance[]>>;
+  buildings?: BuildingInstance[];
 }
 
 export default function TownhallDialogue({
   isOpen,
   onClose,
-  setBuildings,
   isBuildingMode,
   setIsBuildingMode,
   hoveredCoords,
-  buildings,
 }: TownhallDialogueProps) {
-  const [selectedBuildingType, setSelectedBuildingType] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const buildings = useSelector((state: RootState) => state.buildings);
+
+  const [selectedBuildingType, setSelectedBuildingType] = useState<BuildingType | null>(null);
   const [promptDialogue, setPromptDialogue] = useState<string | null>(null);
 
-  const addBuilding = (buildingType: string, x: number, y: number) => {
-    const newBuilding: Building = {
-      id: crypto.randomUUID(),
-      type: buildingType,
-      gridX: x,
-      gridY: y,
-      level: 1,
-      lastCollected: Date.now(),
-    };
+  const handleAddBuilding = useCallback(
+    (buildingType: BuildingType, x: number, y: number) => {
+      dispatch(
+        addBuilding({
+          type: buildingType,
+          gridX: x,
+          gridY: y,
+          level: 1,
+        })
+      );
 
-    setBuildings((prev) => [...prev, newBuilding]);
-    setIsBuildingMode(false);
-    setSelectedBuildingType(null);
-  };
+      const config = BUILDINGS_CONFIG[buildingType];
+      if (config?.requirements) {
+        dispatch(deductResources(config.requirements));
+      }
+
+      setIsBuildingMode(false);
+      setSelectedBuildingType(null);
+    },
+    [dispatch, setIsBuildingMode]
+  );
 
   const handleSelectBuilding = (buildingType: string) => {
-    setSelectedBuildingType(buildingType);
+    setSelectedBuildingType(buildingType as BuildingType);
     setIsBuildingMode(true);
     setPromptDialogue(null);
     onClose();
   };
 
-  // 3. Typed accumulator in reduce
   const getBuildingCounts = (): Record<string, number> => {
     return buildings.reduce<Record<string, number>>((acc, current) => {
       const type = current.type;
@@ -84,13 +91,13 @@ export default function TownhallDialogue({
       );
 
       if (!isOccupied) {
-        addBuilding(selectedBuildingType, hoveredCoords.x, hoveredCoords.y);
+        handleAddBuilding(selectedBuildingType, hoveredCoords.x, hoveredCoords.y);
       }
     };
 
     window.addEventListener("click", handleGridClick);
     return () => window.removeEventListener("click", handleGridClick);
-  }, [isBuildingMode, selectedBuildingType, hoveredCoords, buildings]);
+  }, [isBuildingMode, selectedBuildingType, hoveredCoords, buildings, handleAddBuilding]);
 
   if (!isOpen) return null;
 

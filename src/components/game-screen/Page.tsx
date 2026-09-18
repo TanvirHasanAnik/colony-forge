@@ -1,5 +1,7 @@
-import { MouseEvent, useState } from "react";
-import { BUILDING_CONFIGS, BUILDING_NAMES } from "../../utilities/building-types";
+import { type MouseEvent, useState } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store";
+import { BUILDING_CONFIGS, BUILDING_NAMES, type BuildingType } from "../../utilities/building-types";
 import HunterHutDialogue from "./hunter-hut/Dialogue";
 import SawmillDialogue from "./sawmill/Dialogue";
 import TownhallDialogue from "./townhall/Dialogue";
@@ -7,39 +9,25 @@ import BuilderHutDialogue from "./builder-hut/Dialogue";
 import HouseDialogue from "./house/Dialogue";
 
 export default function GameScreen() {
-  interface BuildingInstance {
-    id: string;
-    type: keyof typeof BUILDING_CONFIGS;
-    gridX: number;
-    gridY: number;
-    level: number;
-  }
-
-  const [activeDialogue, setActiveDialogue] = useState<string | null>(null);
+  const [activeDialogue, setActiveDialogue] = useState<BuildingType | null>(null);
   const [hoveredCoords, setHoveredCoords] = useState<{ x: number; y: number } | null>(null);
   const [isBuildingMode, setIsBuildingMode] = useState<boolean>(false);
 
   const GRID_COLS = 5;
   const GRID_ROWS = 5;
 
-  const [buildings, setBuildings] = useState<BuildingInstance[]>([
-    { id: "b1", type: BUILDING_NAMES.TOWNHALL, gridX: 2, gridY: 2, level: 1},
-    { id: "b2", type: BUILDING_NAMES.HOUSE, gridX: 3, gridY: 3, level: 1 },
-    { id: "b3", type: BUILDING_NAMES.HUNTERHUT, gridX: 1, gridY: 1, level: 1},
-    { id: "b4", type: BUILDING_NAMES.SAWMILL, gridX: 1, gridY: 3, level: 1},
-    { id: "b5", type: BUILDING_NAMES.BUILDERHUT, gridX: 3, gridY: 2, level: 1},
-  ]);
+  const buildings = useSelector((state: RootState) => state.buildings);
 
   const handleContextMenu = (e: MouseEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    if(isBuildingMode){
-      setIsBuildingMode(false)
+    e.preventDefault();
+    if (isBuildingMode) {
+      setIsBuildingMode(false);
     }
-  }
+  };
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    
+
     const relativeX = e.clientX - rect.left;
     const relativeY = e.clientY - rect.top;
 
@@ -61,29 +49,31 @@ export default function GameScreen() {
       <TownhallDialogue
         isOpen={activeDialogue === BUILDING_NAMES.TOWNHALL}
         onClose={() => setActiveDialogue(null)}
-        setBuildings={setBuildings}
-        buildings={buildings}
         isBuildingMode={isBuildingMode}
         setIsBuildingMode={setIsBuildingMode}
         hoveredCoords={hoveredCoords}
       />
-      <HunterHutDialogue isOpen={activeDialogue === BUILDING_NAMES.HUNTERHUT}
+      <HunterHutDialogue
+        isOpen={activeDialogue === BUILDING_NAMES.HUNTERHUT}
         onClose={() => setActiveDialogue(null)}
       />
-      <SawmillDialogue isOpen={activeDialogue === BUILDING_NAMES.SAWMILL}
+      <SawmillDialogue
+        isOpen={activeDialogue === BUILDING_NAMES.SAWMILL}
         onClose={() => setActiveDialogue(null)}
       />
-      <BuilderHutDialogue isOpen={activeDialogue === BUILDING_NAMES.BUILDERHUT}
+      <BuilderHutDialogue
+        isOpen={activeDialogue === BUILDING_NAMES.BUILDERHUT}
         onClose={() => setActiveDialogue(null)}
       />
-      <HouseDialogue isOpen={activeDialogue === BUILDING_NAMES.HOUSE}
+      <HouseDialogue
+        isOpen={activeDialogue === BUILDING_NAMES.HOUSE}
         onClose={() => setActiveDialogue(null)}
       />
 
       <div className="text-center font-bold p-2 bg-slate-800 text-white rounded mb-2 flex justify-between px-4 items-center">
         <span>
-          {hoveredCoords 
-            ? `Cursor: (${hoveredCoords.x}, ${hoveredCoords.y})` 
+          {hoveredCoords
+            ? `Cursor: (${hoveredCoords.x}, ${hoveredCoords.y})`
             : "Hover over the grid"}
         </span>
         {isBuildingMode && (
@@ -93,7 +83,7 @@ export default function GameScreen() {
         )}
       </div>
 
-      <div 
+      <div
         onMouseMove={handleMouseMove}
         onMouseLeave={() => setHoveredCoords(null)}
         onContextMenu={handleContextMenu}
@@ -104,7 +94,7 @@ export default function GameScreen() {
               : "cursor-crosshair"
             : ""
         }`}
-        >
+      >
         {buildings.map((b) => {
           const config = BUILDING_CONFIGS[b.type];
 
@@ -114,7 +104,7 @@ export default function GameScreen() {
               onClick={(e) => {
                 if (isBuildingMode) {
                   e.stopPropagation();
-                }else{
+                } else {
                   setActiveDialogue(b.type);
                 }
               }}
@@ -123,14 +113,14 @@ export default function GameScreen() {
                 gridRowStart: b.gridY + 1,
               }}
               className={`text-white w-full h-full rounded transition-all duration-150 z-10 ${
-                config.color || "bg-gray-500"
+                config?.color || "bg-gray-500"
               } ${
                 isBuildingMode
-                  ? "cursor-not-allowed" 
+                  ? "cursor-not-allowed"
                   : "cursor-pointer hover:brightness-110 hover:ring-4 hover:ring-yellow-400"
               }`}
             >
-              {config.name}
+              {config?.name ?? b.type}
             </button>
           );
         })}

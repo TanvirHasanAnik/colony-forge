@@ -1,7 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { RESOURCE_NAMES, type Resource } from './type';
 
-// 1. Explicitly type the initial state
 const initialState: Resource = {
   [RESOURCE_NAMES.COIN]: 100,
   [RESOURCE_NAMES.WOOD]: 50,

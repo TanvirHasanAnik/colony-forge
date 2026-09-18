@@ -10,39 +10,7 @@ interface AddBuildingProps {
   handleSelectBuilding: (buildingName: string) => void;
 }
 
-interface BuildingConfig {
-  name: string;
-  type: string;
-  description: string;
-  requirements: Partial<Resource>;
-}
-
-const BUILDINGS_CONFIG: Record<string, BuildingConfig> = {
-  [BUILDING_NAMES.HUNTERHUT]: {
-    name: "Hunter's hut",
-    type: BUILDING_NAMES.HUNTERHUT,
-    description: "Build a new Hunter's hut. Adding more hunter huts helps in increased meat production rate.",
-    requirements: { coin: 500 },
-  },
-  [BUILDING_NAMES.SAWMILL]: {
-    name: "Sawmill",
-    type: BUILDING_NAMES.SAWMILL,
-    description: "Build a new Sawmill. Adding more sawmills helps in increased wood production rate.",
-    requirements: { coin: 500 },
-  },
-  [BUILDING_NAMES.BUILDERHUT]: {
-    name: "Builder hut",
-    type: BUILDING_NAMES.BUILDERHUT,
-    description: "Build a new Builder hut. Adding more builder huts increases builder capacity.",
-    requirements: { coin: 500 },
-  },
-  [BUILDING_NAMES.HOUSE]: {
-    name: "House",
-    type: BUILDING_NAMES.HOUSE,
-    description: "Build a new House. Adding more houses increases population capacity.",
-    requirements: { coin: 500 },
-  },
-};
+import { BUILDINGS_CONFIG, type BuildingConfig } from "./constantStrings";
 
 function AddBuildingModal({
   config,

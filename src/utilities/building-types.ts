@@ -4,7 +4,9 @@ export const BUILDING_NAMES = {
   SAWMILL: "Sawmill",
   HUNTERHUT: "Hunter's Hut",
   BUILDERHUT: "Builder's Hut",
-}
+} as const;
+
+export type BuildingType = (typeof BUILDING_NAMES)[keyof typeof BUILDING_NAMES];
 
 export const BUILDING_CONFIGS = {
   [BUILDING_NAMES.TOWNHALL]: {
