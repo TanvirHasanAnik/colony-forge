@@ -8,6 +8,19 @@ export const ADD_BUILDING_PROMPT = {
   [BUILDING_NAMES.SAWMILL]: "add-sawmill",
 } as const;
 
+//Access production rate: PRODUCTION_RATE.[type].[level]
+export const PRODUCTION_RATE = {
+  [BUILDING_NAMES.HOUSE]: {
+    1: {coin: 10}
+  },
+  [BUILDING_NAMES.HUNTERHUT]: {
+    1: {coin: 20, meat: 20}
+  },
+  [BUILDING_NAMES.SAWMILL]: {
+    1: {coin: 10, wood: 20}
+  }
+}
+
 export interface BuildingConfig {
   name: string;
   type: string;
