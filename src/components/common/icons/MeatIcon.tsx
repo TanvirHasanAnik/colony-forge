@@ -1,0 +1,18 @@
+import type { SVGProps } from "react";
+
+export function MeatIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M19 8c-1.5 0-3-1-4.5-2.5a5.5 5.5 0 0 0-7.8 0 5.5 5.5 0 0 0 0 7.8c1.5 1.5 2.5 3 2.5 4.5 0 1.7 1.3 3.2 3 3.2 1.2 0 2.3-.7 2.8-1.8" />
+      <circle cx="8" cy="8" r="2" />
+    </svg>
+  );
+}

@@ -10,23 +10,7 @@ interface AddBuildingProps {
   handleSelectBuilding: (buildingName: string) => void;
 }
 
-function CoinIcon({ className = "w-4 h-4" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <circle cx="12" cy="12" r="10" className="opacity-30" />
-      <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.93V18a1 1 0 0 1-2 0v-1.07A4 4 0 0 1 9.4 10.4a1 1 0 0 1 1.4 1.42A2 2 0 0 0 12 15a2 2 0 0 0 0-4c-1.9 0-3.5-1.12-3.5-2.75A2.75 2.75 0 0 1 11 5.57V5a1 1 0 0 1 2 0v.57A4 4 0 0 1 14.6 13a1 1 0 0 1-1.4-1.42A2 2 0 0 0 12 8a2 2 0 0 0 0 4c1.9 0 3.5 1.12 3.5 2.75A2.75 2.75 0 0 1 13 16.93z" />
-    </svg>
-  );
-}
-
-function HammerIcon({ className = "w-4 h-4" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m15 12-8.5 8.5a2.12 2.12 0 1 1-3-3L12 9" />
-      <path d="M17.64 15 22 10.64l-4.24-4.24-4.36 4.36" />
-    </svg>
-  );
-}
+import { CoinIcon, HammerIcon } from "../../common/icons";
 
 function AddBuildingModal({
   config,

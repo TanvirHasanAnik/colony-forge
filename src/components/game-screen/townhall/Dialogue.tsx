@@ -13,6 +13,20 @@ import {
 } from "./AddBuildingPrompt";
 import { ADD_BUILDING_PROMPT, BUILDINGS_CONFIG } from "./constantStrings";
 
+import {
+  TownhallIcon,
+  HouseIcon,
+  SawmillIcon,
+  HunterIcon,
+  BuilderIcon,
+  CoinIcon,
+  WoodIcon,
+  MeatIcon,
+  CloseIcon,
+  HammerIcon,
+  ChartIcon,
+} from "../../common/icons";
+
 export type Building = BuildingInstance;
 
 interface HoveredCoords {
@@ -31,102 +45,6 @@ interface TownhallDialogueProps {
 }
 
 type TabType = "construct" | "census" | "upgrades";
-
-// --- Inline Crisp SVG Icons ---
-function TownhallIcon({ className = "w-5 h-5" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4M9 10h.01M15 10h.01" />
-    </svg>
-  );
-}
-
-function HouseIcon({ className = "w-5 h-5" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-      <polyline points="9 22 9 12 15 12 15 22" />
-    </svg>
-  );
-}
-
-function SawmillIcon({ className = "w-5 h-5" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m14 12-8.5 8.5a2.12 2.12 0 1 1-3-3L11 9" />
-      <path d="M15 13 9 7l4-4 6 6h3l-3 3" />
-      <path d="M18 16a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
-    </svg>
-  );
-}
-
-function HunterIcon({ className = "w-5 h-5" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10" />
-      <line x1="22" y1="12" x2="18" y2="12" />
-      <line x1="6" y1="12" x2="2" y2="12" />
-      <line x1="12" y1="6" x2="12" y2="2" />
-      <line x1="12" y1="22" x2="12" y2="18" />
-    </svg>
-  );
-}
-
-function BuilderIcon({ className = "w-5 h-5" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m15 12-8.373 8.373a1 1 0 1 1-3-3L12 9" />
-      <path d="m18 15 4-4a4 4 0 0 0-5.66-5.66l-4 4" />
-      <path d="m2 2 4 4" />
-    </svg>
-  );
-}
-
-function CoinIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <circle cx="12" cy="12" r="10" className="opacity-30" />
-      <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.93V18a1 1 0 0 1-2 0v-1.07A4 4 0 0 1 9.4 10.4a1 1 0 0 1 1.4 1.42A2 2 0 0 0 12 15a2 2 0 0 0 0-4c-1.9 0-3.5-1.12-3.5-2.75A2.75 2.75 0 0 1 11 5.57V5a1 1 0 0 1 2 0v.57A4 4 0 0 1 14.6 13a1 1 0 0 1-1.4-1.42A2 2 0 0 0 12 8a2 2 0 0 0 0 4c1.9 0 3.5 1.12 3.5 2.75A2.75 2.75 0 0 1 13 16.93z" />
-    </svg>
-  );
-}
-
-function WoodIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 18v-4c0-2.5 3.5-4 8-4s8 1.5 8 4v4c0 2.5-3.5 4-8 4s-8-1.5-8-4Z" />
-      <path d="M4 14c0-2.5 3.5-4 8-4s8 1.5 8 4" />
-      <path d="M4 10c0-2.5 3.5-4 8-4s8 1.5 8 4" />
-    </svg>
-  );
-}
-
-function MeatIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M19 8c-1.5 0-3-1-4.5-2.5a5.5 5.5 0 0 0-7.8 0 5.5 5.5 0 0 0 0 7.8c1.5 1.5 2.5 3 2.5 4.5 0 1.7 1.3 3.2 3 3.2 1.2 0 2.3-.7 2.8-1.8" />
-      <circle cx="8" cy="8" r="2" />
-    </svg>
-  );
-}
-
-function CloseIcon({ className = "w-5 h-5" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="18" y1="6" x2="6" y2="18" />
-      <line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
-  );
-}
-
-function HammerIcon({ className = "w-4 h-4" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m15 12-8.5 8.5a2.12 2.12 0 1 1-3-3L12 9" />
-      <path d="M17.64 15 22 10.64l-4.24-4.24-4.36 4.36" />
-    </svg>
-  );
-}
 
 const BUILDING_METADATA: Record<
   string,
@@ -387,10 +305,7 @@ export default function TownhallDialogue({
                     : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
                 }`}
               >
-                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M3 3v18h18" />
-                  <path d="m19 9-5 5-4-4-3 3" />
-                </svg>
+                <ChartIcon className="w-3.5 h-3.5" />
                 <span>Colony Census</span>
                 <span className="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded-full text-slate-300 font-mono">
                   {buildings.length}
