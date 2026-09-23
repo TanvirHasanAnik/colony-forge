@@ -1,0 +1,8 @@
+{
+  "autoApprove": {
+    "fileRead": true,
+    "fileWrite": true,
+    "commandExecution": true
+  }
+}
+

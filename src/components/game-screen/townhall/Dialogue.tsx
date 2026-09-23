@@ -6,26 +6,24 @@ import type { RootState } from "../../../store";
 import { BUILDING_NAMES, type BuildingType } from "../../../utilities/building-types";
 import { getResourceProductionRateFromBuilding, hasResource } from "../../../utilities/resource";
 import {
-  AddHunterhut,
   AddBuilderhut,
-  AddSawmill,
   AddHouse,
+  AddHunterhut,
+  AddSawmill,
 } from "./AddBuildingPrompt";
 import { ADD_BUILDING_PROMPT, BUILDINGS_CONFIG } from "./constantStrings";
 
-import {
-  TownhallIcon,
-  HouseIcon,
-  SawmillIcon,
-  HunterIcon,
-  BuilderIcon,
-  CoinIcon,
-  WoodIcon,
-  MeatIcon,
-  CloseIcon,
-  HammerIcon,
-  ChartIcon,
-} from "../../common/icons";
+import builderIcon from "../../../assets/icons/builder.svg";
+import chartIcon from "../../../assets/icons/chart.svg";
+import closeIcon from "../../../assets/icons/close.svg";
+import coinIcon from "../../../assets/icons/coin.svg";
+import hammerIcon from "../../../assets/icons/hammer.svg";
+import houseIcon from "../../../assets/icons/house.svg";
+import hunterIcon from "../../../assets/icons/hunter.svg";
+import meatIcon from "../../../assets/icons/meat.svg";
+import sawmillIcon from "../../../assets/icons/sawmill.svg";
+import townhallIcon from "../../../assets/icons/townhall.svg";
+import woodIcon from "../../../assets/icons/wood.svg";
 
 export type Building = BuildingInstance;
 
@@ -50,7 +48,7 @@ const BUILDING_METADATA: Record<
   string,
   {
     role: string;
-    icon: React.ComponentType<{ className?: string }>;
+    icon: string;
     accentColor: string;
     badgeBg: string;
     iconBg: string;
@@ -59,7 +57,7 @@ const BUILDING_METADATA: Record<
 > = {
   [BUILDING_NAMES.HOUSE]: {
     role: "Population & Housing",
-    icon: HouseIcon,
+    icon: houseIcon,
     accentColor: "text-amber-400",
     badgeBg: "bg-amber-500/10 text-amber-300 border-amber-500/30",
     iconBg: "bg-amber-500/20 text-amber-400 border-amber-500/30",
@@ -67,7 +65,7 @@ const BUILDING_METADATA: Record<
   },
   [BUILDING_NAMES.SAWMILL]: {
     role: "Lumber Harvesting",
-    icon: SawmillIcon,
+    icon: sawmillIcon,
     accentColor: "text-orange-400",
     badgeBg: "bg-orange-500/10 text-orange-300 border-orange-500/30",
     iconBg: "bg-orange-500/20 text-orange-400 border-orange-500/30",
@@ -75,7 +73,7 @@ const BUILDING_METADATA: Record<
   },
   [BUILDING_NAMES.HUNTERHUT]: {
     role: "Game & Provisions",
-    icon: HunterIcon,
+    icon: hunterIcon,
     accentColor: "text-rose-400",
     badgeBg: "bg-rose-500/10 text-rose-300 border-rose-500/30",
     iconBg: "bg-rose-500/20 text-rose-400 border-rose-500/30",
@@ -83,7 +81,7 @@ const BUILDING_METADATA: Record<
   },
   [BUILDING_NAMES.BUILDERHUT]: {
     role: "Labor & Construction",
-    icon: BuilderIcon,
+    icon: builderIcon,
     accentColor: "text-emerald-400",
     badgeBg: "bg-emerald-500/10 text-emerald-300 border-emerald-500/30",
     iconBg: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
@@ -213,7 +211,7 @@ export default function TownhallDialogue({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-6 pt-5 pb-4 border-b border-slate-800">
           <div className="flex items-center gap-3.5">
             <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/30 border border-blue-400/40 flex items-center justify-center text-blue-400 shadow-inner">
-              <TownhallIcon className="w-6 h-6" />
+              <img src={townhallIcon} alt="Townhall" className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -234,15 +232,15 @@ export default function TownhallDialogue({
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700/60 text-xs font-medium">
               <span className="flex items-center gap-1 text-amber-400 font-bold">
-                <CoinIcon /> {inventory.coin?.amount?.toLocaleString() ?? 0}
+                <img src={coinIcon} alt="Coin" className="w-3.5 h-3.5 inline-block" /> {inventory.coin?.amount?.toLocaleString() ?? 0}
               </span>
               <span className="text-slate-600">|</span>
               <span className="flex items-center gap-1 text-orange-400 font-bold">
-                <WoodIcon /> {inventory.wood?.amount?.toLocaleString() ?? 0}
+                <img src={woodIcon} alt="Wood" className="w-3.5 h-3.5 inline-block" /> {inventory.wood?.amount?.toLocaleString() ?? 0}
               </span>
               <span className="text-slate-600">|</span>
               <span className="flex items-center gap-1 text-rose-400 font-bold">
-                <MeatIcon /> {inventory.meat?.amount?.toLocaleString() ?? 0}
+                <img src={meatIcon} alt="Meat" className="w-3.5 h-3.5 inline-block" /> {inventory.meat?.amount?.toLocaleString() ?? 0}
               </span>
             </div>
 
@@ -255,7 +253,7 @@ export default function TownhallDialogue({
               aria-label="Close dialog"
               className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 border border-transparent hover:border-slate-700 transition-all cursor-pointer"
             >
-              <CloseIcon />
+              <img src={closeIcon} alt="Close" className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -292,7 +290,7 @@ export default function TownhallDialogue({
                     : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
                 }`}
               >
-                <HammerIcon className="w-3.5 h-3.5" />
+                <img src={hammerIcon} alt="" className="w-3.5 h-3.5" />
                 <span>Construction Yard</span>
               </button>
 
@@ -305,7 +303,7 @@ export default function TownhallDialogue({
                     : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
                 }`}
               >
-                <ChartIcon className="w-3.5 h-3.5" />
+                <img src={chartIcon} alt="" className="w-3.5 h-3.5" />
                 <span>Colony Census</span>
                 <span className="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded-full text-slate-300 font-mono">
                   {buildings.length}
@@ -321,7 +319,7 @@ export default function TownhallDialogue({
                     : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
                 }`}
               >
-                <TownhallIcon className="w-3.5 h-3.5" />
+                <img src={townhallIcon} alt="" className="w-3.5 h-3.5" />
                 <span>Citadel Tier</span>
                 <span className="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-1.5 py-0.5 rounded-full font-mono">
                   Lv {townhallLevel}
@@ -367,7 +365,7 @@ export default function TownhallDialogue({
                               <div
                                 className={`w-9 h-9 rounded-lg border flex items-center justify-center ${meta.iconBg}`}
                               >
-                                <IconComponent className="w-5 h-5" />
+                                <img src={meta?.icon ?? houseIcon} alt={meta?.role ?? "House"} className="w-5 h-5" />
                               </div>
                               <div>
                                 <h4 className="text-sm font-bold text-white group-hover:text-blue-300 transition-colors">
@@ -401,7 +399,7 @@ export default function TownhallDialogue({
                                   : "bg-red-500/10 text-red-400 border border-red-500/30"
                               }`}
                             >
-                              <CoinIcon /> {config.requirements.coin ?? 0}
+                              <img src={coinIcon} alt="Coin" className="w-3.5 h-3.5 inline-block" /> {config.requirements.coin ?? 0}
                             </span>
                           </div>
 
@@ -427,7 +425,7 @@ export default function TownhallDialogue({
                                   : "bg-slate-800 text-slate-500 border border-slate-700/50 cursor-not-allowed opacity-60"
                               }`}
                             >
-                              <HammerIcon className="w-3.5 h-3.5" />
+                              <img src={hammerIcon} alt="Hammer" className="w-3.5 h-3.5" />
                               <span>Place</span>
                             </button>
                           </div>
