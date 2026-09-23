@@ -4,8 +4,11 @@ export const RESOURCE_NAMES = {
   MEAT: "meat",
 } as const;
 
-export type Resource = {
-  [RESOURCE_NAMES.COIN]: number;
-  [RESOURCE_NAMES.WOOD]: number;
-  [RESOURCE_NAMES.MEAT]: number;
-};
+export type ResourceKey = typeof RESOURCE_NAMES[keyof typeof RESOURCE_NAMES];
+export interface ResourceItem {
+  amount: number;
+  rate: number;
+}
+
+export type Resource = Record<ResourceKey, ResourceItem>;
+export type ResourceAmount = Partial<Record<ResourceKey, number>>

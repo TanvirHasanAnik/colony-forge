@@ -97,7 +97,7 @@ export default function GameScreen() {
       >
         {buildings.map((b) => {
           const config = BUILDING_CONFIGS[b.type];
-
+          console.log(b.production)
           return (
             <button
               key={b.id}

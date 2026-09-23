@@ -1,8 +1,11 @@
 Technologies used: 
-    1. redux for resource management
+    1. redux for resource & building management
 
 Difficulties faced:
-	1. Resource icrement with time based on buildings
+	1. Resource icrement rate based on building states.
+		- building state contains production rate - each building adds different resource values
+		- Resource state in store has rate property
+			- rate property value can be updated using setProductionRate method from resourceSlice
 
 --------------------------------------------------------
 Resources:
