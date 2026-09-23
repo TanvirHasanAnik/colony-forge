@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import type { Resource } from "../../../resources/type";
+import type { ResourceKey } from "../../../resources/type";
 import type { RootState } from "../../../store";
 import { BUILDING_NAMES } from "../../../utilities/building-types";
 import { hasResource } from "../../../utilities/resource";
@@ -33,7 +33,7 @@ function AddBuildingModal({
       <h3>Requirements</h3>
       <ul>
         {Object.entries(config.requirements).map(([resource, amount]) => {
-          const currentAmount = inventory[resource as keyof Resource] ?? 0;
+          const currentAmount = inventory[resource as ResourceKey]?.amount ?? 0;
           const isEnough = currentAmount >= (amount ?? 0);
 
           return (

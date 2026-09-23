@@ -1,4 +1,4 @@
-import type { Resource } from "../../../resources/type";
+import type { ResourceAmount } from "../../../resources/type";
 import { BUILDING_NAMES } from "../../../utilities/building-types";
 
 export const ADD_BUILDING_PROMPT = {
@@ -10,7 +10,7 @@ export const ADD_BUILDING_PROMPT = {
 
 export const PRODUCTION_RATE = {
   [BUILDING_NAMES.HOUSE]: {
-    1: {coin: 10}
+    1: {coin: 30}
   },
   [BUILDING_NAMES.HUNTERHUT]: {
     1: {coin: 20, meat: 20}
@@ -24,7 +24,7 @@ export interface BuildingConfig {
   name: string;
   type: string;
   description: string;
-  requirements: Partial<Resource>;
+  requirements: ResourceAmount;
 }
 
 export const BUILDINGS_CONFIG: Record<string, BuildingConfig> = {

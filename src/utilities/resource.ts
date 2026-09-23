@@ -1,4 +1,4 @@
-import type { Resource, ResourceAmount } from "../resources/type";
+import type { Resource, ResourceAmount, ResourceKey } from "../resources/type";
 import type { BuildingInstance } from "../buildings/buildingSlice";
 
 export function getResourceProductionRateFromBuilding(
@@ -16,10 +16,10 @@ export function getResourceProductionRateFromBuilding(
 
 export function hasResource(
   playerInventory: Resource,
-  requirement: Partial<Resource>
+  requirement: ResourceAmount
 ): boolean {
-  return (Object.keys(requirement) as Array<keyof Resource>).every((key) => {
+  return (Object.keys(requirement) as Array<ResourceKey>).every((key) => {
     const requiredAmount = requirement[key] ?? 0;
-    return (playerInventory[key] ?? 0) >= requiredAmount;
+    return (playerInventory[key]?.amount ?? 0) >= requiredAmount;
   });
 }
