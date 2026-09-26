@@ -4,15 +4,13 @@ import StatusBar from './components/layout/StatusBar'
 import ActionBar from './components/layout/ActionBar'
 function App() {
   return (
-    <>
-        <StatusBar/>
-        <main className='h-full w-full'>
-          <GameScreen/>
-        </main>
-        <footer className='bg-green-200 h-20'>
-          <ActionBar/>
-        </footer>
-    </>
+    <div className="flex flex-col min-h-screen bg-slate-950">
+      <StatusBar/>
+      <main className="flex-1 w-full">
+        <GameScreen/>
+      </main>
+      <ActionBar/>
+    </div>
   )
 }
 
