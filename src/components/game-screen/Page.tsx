@@ -70,19 +70,6 @@ export default function GameScreen() {
         onClose={() => setActiveDialogue(null)}
       />
 
-      <div className="text-center font-bold p-2 bg-slate-800 text-white rounded mb-2 flex justify-between px-4 items-center">
-        <span>
-          {hoveredCoords
-            ? `Cursor: (${hoveredCoords.x}, ${hoveredCoords.y})`
-            : "Hover over the grid"}
-        </span>
-        {isBuildingMode && (
-          <span className="text-yellow-400 font-extrabold animate-pulse">
-            🔨 BUILD MODE ACTIVE (Click an empty tile to place)
-          </span>
-        )}
-      </div>
-
       <div
         onMouseMove={handleMouseMove}
         onMouseLeave={() => setHoveredCoords(null)}

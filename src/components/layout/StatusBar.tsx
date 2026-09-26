@@ -5,8 +5,8 @@ import { RESOURCE_NAMES } from "../../resources/type";
 import type { RootState } from "../../store";
 import { getResourceProductionRateFromBuilding } from "../../utilities/resource";
 import { CoinIcon } from "../common/icons/CoinIcon";
-import { WoodIcon } from "../common/icons/WoodIcon";
 import { MeatIcon } from "../common/icons/MeatIcon";
+import { WoodIcon } from "../common/icons/WoodIcon";
 
 const resourceIcons = {
   [RESOURCE_NAMES.COIN]: CoinIcon,
